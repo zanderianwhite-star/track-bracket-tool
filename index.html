@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track &amp; Field Madness — Tournament Bracket Teaching Tool</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">🏟️</span>
+      <div>
+        <h1>Track &amp; Field Madness</h1>
+        <p class="tagline">A hands-on lesson in <strong>seeding</strong> &amp; <strong>probability</strong></p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="event-tabs" role="tablist" aria-label="Event">
+    <button class="event-tab active" data-event="100m" role="tab" aria-selected="true">100m Sprint</button>
+    <button class="event-tab" data-event="1mile" role="tab" aria-selected="false">1 Mile</button>
+  </nav>
+
+  <main>
+    <!-- ============ INPUT PANEL ============ -->
+    <section id="input-panel" class="panel">
+      <div class="panel-header">
+        <h2>Step 1 · Enter your 16 athletes</h2>
+        <p class="hint">
+          100m times as seconds (e.g. <code>10.42</code>). &nbsp;
+          Mile times as <code>mm:ss.ss</code> (e.g. <code>4:12.30</code>).
+        </p>
+      </div>
+
+      <div id="athlete-inputs" class="athlete-grid" aria-live="polite"></div>
+
+      <div class="actions">
+        <button id="btn-sample" class="btn btn-secondary">Load Sample Data</button>
+        <button id="btn-reset" class="btn btn-ghost">Reset Athletes</button>
+        <button id="btn-build" class="btn btn-primary">Seed &amp; Build Bracket →</button>
+      </div>
+
+      <p id="input-error" class="error-msg" hidden></p>
+    </section>
+
+    <!-- ============ BRACKET PANEL ============ -->
+    <section id="bracket-panel" class="panel" hidden>
+      <div class="panel-header row">
+        <h2>Step 2 · The Bracket</h2>
+        <div class="mode-controls">
+          <label class="toggle">
+            <input type="radio" name="mode" value="predict" checked />
+            <span>Predict Mode</span>
+          </label>
+          <label class="toggle">
+            <input type="radio" name="mode" value="simulate" />
+            <span>Simulate Mode</span>
+          </label>
+          <button id="btn-simulate" class="btn btn-primary" hidden>🎲 Re-Simulate</button>
+          <button id="btn-edit" class="btn btn-ghost">← Edit Athletes</button>
+        </div>
+      </div>
+
+      <p class="hint">
+        <strong>Predict Mode:</strong> click the athlete you think will win each matchup.
+        <strong>Simulate Mode:</strong> let probability decide — click "Re-Simulate" to re-roll.
+      </p>
+
+      <!-- Group stage: 2×2 grid of four group brackets -->
+      <div id="groups" class="groups-grid"></div>
+
+      <!-- Finals -->
+      <div id="finals" class="finals"></div>
+
+      <!-- Champion banner -->
+      <div id="champion" class="champion" hidden></div>
+
+      <!-- Summary / path-to-victory -->
+      <aside id="summary" class="summary" hidden>
+        <h3>🏆 Path to Victory — Title Odds</h3>
+        <p class="hint">
+          Multiplying each seed's matchup probability through all 3 rounds gives their
+          overall chance of winning the tournament.
+        </p>
+        <ol id="summary-list"></ol>
+      </aside>
+    </section>
+
+    <!-- ============ TEACHING LEGEND ============ -->
+    <section class="legend panel">
+      <h3>How it works</h3>
+      <ol class="legend-list">
+        <li>
+          <strong>Seeding:</strong> athletes are ranked 1–16 by personal best time
+          (fastest = #1). Seeds are distributed across 4 groups using a
+          <em>snake</em> pattern (1‑8‑9‑16, 2‑7‑10‑15, …) so that each group has a
+          balanced mix of strong and weak athletes.
+        </li>
+        <li>
+          <strong>Probability:</strong> for any matchup we compute how much
+          <em>percent faster</em> the favorite's PB is, then convert that to a win
+          probability. The formula is clamped between 50% and 99% — in real life even
+          heavy favorites lose sometimes!
+        </li>
+        <li>
+          <strong>Path to Victory:</strong> we trace each athlete's most-likely
+          opponents through every round and multiply their matchup probabilities to
+          get their overall tournament title odds.
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Built for the classroom · open-source · no data is saved.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
